@@ -1,0 +1,61 @@
+{
+	"description" : "Build a basic Ubuntu 12.04 LTS Virtualbox image with puppet installed and ready for use with Vagrant",
+	"variables" : {
+		"username": "vagrant",
+		"password": "vagrant",
+		"hostname": "webdev",
+		"iso_url": "http://releases.ubuntu.com/12.04/ubuntu-12.04.4-server-i386.iso",
+		"iso_checksum": "0081e57fb8c7e4094fb9767384f087c6",
+		"iso_checksum_type": "md5",
+		"guest_additions_url": "http://download.virtualbox.org/virtualbox/4.3.10/VBoxGuestAdditions_4.3.10.iso",
+		"guest_additions_sha256": "247e15e9a205dcd4761f6cb547ceca2a61e8d6905c1930870939fd323f4cd1ae"
+	},
+	"builders" : [
+		{
+			"type": "virtualbox-iso",
+			"guest_os_type": "Ubuntu",
+			"iso_url": "{{user `iso_url`}}",
+			"iso_checksum": "{{user `iso_checksum`}}",
+			"iso_checksum_type": "{{user `iso_checksum_type`}}",
+			"ssh_username": "{{user `username`}}",
+			"ssh_password": "{{user `password`}}",
+			"guest_additions_url": "{{user `guest_additions_url`}}",
+			"guest_additions_sha256": "{{user `guest_additions_sha256`}}",
+			"http_directory": ".",
+			"boot_command": [
+				"<esc><esc><enter><wait>",
+				"/install/vmlinuz noapic ",
+				"preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+				"debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+				"hostname={{user `hostname`}} ",
+				"fb=false debconf/frontend=noninteractive ",
+				"keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+				"keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+				"initrd=/install/initrd.gz -- <enter>"
+			],
+			"shutdown_command": "sudo shutdown -h now"
+		}
+	],
+	"provisioners" : [
+		{
+			"type": "shell", 
+			"script": "scripts/sudo.sh", 
+			"execute_command": "echo '{{user `password`}}' | {{.Vars}} sudo -E -S bash '{{.Path}}'" 
+		},
+		{
+			"type": "shell", 
+			"script": "scripts/virtualbox.sh", 
+			"only": ["virtualbox-iso"]
+		},
+		{
+			"type": "shell", 
+			"script": "scripts/puppet.sh"
+		}
+	],
+	"post-processors" : [
+		{
+			"type": "vagrant",
+			"output": "{{.Provider}}-{{user `hostname`}}.box"
+		}
+	]
+}
