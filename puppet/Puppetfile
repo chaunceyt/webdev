@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+forge "http://forge.puppetlabs.com"
+mod 'example42/git'
+mod 'example42/vim'
+mod 'puppetlabs/mysql'
+mod 'puppetlabs/apache'
+mod 'example42/php'

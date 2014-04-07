@@ -1,0 +1,26 @@
+FORGE
+  remote: http://forge.puppetlabs.com
+  specs:
+    example42/git (2.0.15)
+      example42/puppi (>= 2.0.0)
+    example42/php (2.0.18)
+      example42/puppi (>= 2.0.0)
+    example42/puppi (2.1.9)
+    example42/vim (2.0.12)
+      example42/puppi (>= 2.0.0)
+    puppetlabs/apache (1.0.1)
+      puppetlabs/concat (>= 1.0.0)
+      puppetlabs/stdlib (>= 2.4.0)
+    puppetlabs/concat (1.1.0-rc1)
+      puppetlabs/stdlib (>= 3.0.0)
+    puppetlabs/mysql (2.2.3)
+      puppetlabs/stdlib (>= 3.2.0)
+    puppetlabs/stdlib (4.1.0)
+
+DEPENDENCIES
+  example42/git (>= 0)
+  example42/php (>= 0)
+  example42/vim (>= 0)
+  puppetlabs/apache (>= 0)
+  puppetlabs/mysql (>= 0)
+

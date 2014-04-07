@@ -1,0 +1,19 @@
+---
+classes:
+  - git
+  - vim
+  - mysql::server
+  - mysql::client
+  - webdev::php54
+  - php
+  - webdev::php
+  - apache
+  - webdev::apache
+apache::default_vhost: false
+apache::mpm_module: false
+apache::mod::prefork:
+  startservers: 2,
+  minspareservers: 1
+  maxspareservers: 3
+  maxclients: 5
+  maxrequestsperchild: 500

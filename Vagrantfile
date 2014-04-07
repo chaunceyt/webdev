@@ -26,7 +26,8 @@ Vagrant::Config.run do |config|
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
-  #config.vm.share_folder "v-data", "/home/vagrant/www", "./www", :"create" => true #, :"extra" => "dmode=770,fmode=770"
+  config.vm.share_folder "vhost-data", "/var/www/html", "./html", :"mount_options" => ["dmode=777", "fmode=777"]
+  config.vm.share_folder "puppet-custom-data", "/etc/puppet/modules", "./puppet/custom", :"mount_options" => ["dmode=777", "fmode=777"]
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
@@ -34,7 +35,10 @@ Vagrant::Config.run do |config|
   # the file base.pp in the manifests_path directory.
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
+    puppet.module_path = "puppet/modules"
     puppet.manifest_file  = "base.pp"
-    puppet.options  = "--verbose"
+    puppet.hiera_config_path = "puppet/hiera.yaml"
+    puppet.working_directory = "/vagrant/puppet"
+    puppet.options  = "--verbose --debug"
   end
 end
