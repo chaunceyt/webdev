@@ -9,6 +9,7 @@ classes:
   - webdev::php
   - apache
   - webdev::apache
+  - webdev::drush
 apache::default_vhost: false
 apache::mpm_module: false
 apache::mod::prefork:
