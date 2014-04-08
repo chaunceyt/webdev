@@ -9,11 +9,10 @@ class webdev::apache {
   package
   {
     "libapache2-mod-php5":
-      ensure => present
+      ensure => present,
+      require => Class['php']
   }
-
-  apache::mod { 'php5':
-	require => [Package['libapache2-mod-php5']],
-  }
+  ->
+  apache::mod { 'php5': }
 
 }
